@@ -75,16 +75,4 @@ class WPCF7_Pipes {
 
 		return $this->pipes[array_rand( $this->pipes )];
 	}
-
-	public function to_array() {
-		return array_map(
-			function( WPCF7_Pipe $pipe ) {
-				return array(
-					$pipe->before,
-					$pipe->after,
-				);
-			},
-			$this->pipes
-		);
-	}
 }

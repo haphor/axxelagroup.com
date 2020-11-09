@@ -72,55 +72,76 @@ function render_block_core_archives( $attributes ) {
 	<select id="' . $dropdown_id . '" name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
 	<option value="">' . $label . '</option>' . $archives . '</select>';
 
-		return sprintf(
+		$block_content = sprintf(
 			'<div class="%1$s">%2$s</div>',
 			esc_attr( $class ),
 			$block_content
 		);
-	}
+	} else {
 
-	$class .= ' wp-block-archives-list';
+		$class .= ' wp-block-archives-list';
 
-	/** This filter is documented in wp-includes/widgets/class-wp-widget-archives.php */
-	$archives_args = apply_filters(
-		'widget_archives_args',
-		array(
-			'type'            => 'monthly',
-			'show_post_count' => $show_post_count,
-		)
-	);
-
-	$archives_args['echo'] = 0;
-
-	$archives = wp_get_archives( $archives_args );
-
-	$classnames = esc_attr( $class );
-
-	if ( empty( $archives ) ) {
-
-		return sprintf(
-			'<div class="%1$s">%2$s</div>',
-			$classnames,
-			__( 'No archives to show.' )
+		/** This filter is documented in wp-includes/widgets/class-wp-widget-archives.php */
+		$archives_args = apply_filters(
+			'widget_archives_args',
+			array(
+				'type'            => 'monthly',
+				'show_post_count' => $show_post_count,
+			)
 		);
+
+		$archives_args['echo'] = 0;
+
+		$archives = wp_get_archives( $archives_args );
+
+		$classnames = esc_attr( $class );
+
+		if ( empty( $archives ) ) {
+
+			$block_content = sprintf(
+				'<div class="%1$s">%2$s</div>',
+				$classnames,
+				__( 'No archives to show.' )
+			);
+		} else {
+
+			$block_content = sprintf(
+				'<ul class="%1$s">%2$s</ul>',
+				$classnames,
+				$archives
+			);
+		}
 	}
 
-	return sprintf(
-		'<ul class="%1$s">%2$s</ul>',
-		$classnames,
-		$archives
-	);
+	return $block_content;
 }
 
 /**
  * Register archives block.
  */
 function register_block_core_archives() {
-	register_block_type_from_metadata(
-		__DIR__ . '/archives',
+	register_block_type(
+		'core/archives',
 		array(
+			'attributes'      => array(
+				'align'             => array(
+					'type' => 'string',
+				),
+				'className'         => array(
+					'type' => 'string',
+				),
+				'displayAsDropdown' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'showPostCounts'    => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+			),
 			'render_callback' => 'render_block_core_archives',
 		)
 	);
 }
+
 add_action( 'init', 'register_block_core_archives' );

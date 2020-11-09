@@ -51,11 +51,13 @@ function render_block_core_categories( $attributes ) {
 		$class .= " {$attributes['className']}";
 	}
 
-	return sprintf(
+	$block_content = sprintf(
 		$wrapper_markup,
 		esc_attr( $class ),
 		$items_markup
 	);
+
+	return $block_content;
 }
 
 /**
@@ -89,11 +91,12 @@ function build_dropdown_script_block_core_categories( $dropdown_id ) {
  * Registers the `core/categories` block on server.
  */
 function register_block_core_categories() {
-	register_block_type_from_metadata(
-		__DIR__ . '/categories',
+	register_block_type(
+		'core/categories',
 		array(
 			'render_callback' => 'render_block_core_categories',
 		)
 	);
 }
+
 add_action( 'init', 'register_block_core_categories' );
