@@ -156,31 +156,50 @@ function add_upload_mimes($mimes) {
 }
 add_filter('upload_mimes', 'add_upload_mimes');
 
-function archive_init() {
+//===== Archives Custom Type ======//
+function custom_archive_type() {
+    // Labels for Custom Post Type
     $labels = array(
-        'name' => esc_html__('Archive', 'Axxela' ),
-        'singular_name' => esc_html__('Archive Item', 'Axxela' ),
-        'add_new' => esc_html__('Add New Item', 'Axxela' ),
-        'add_new_item' => esc_html__('Add New Archive Item', 'Axxela' ),
-        'edit_item' => esc_html__('Edit Archive Item', 'Axxela' ),
-        'new_item' => esc_html__('Add New Archive Item', 'Axxela' ),
-        'view_item' => esc_html__('View Item', 'Axxela' ),
-        'search_items' => esc_html__('Search Archive', 'Axxela' ),
-        'not_found' => esc_html__('No archive items found', 'Axxela' ),
-        'not_found_in_trash' => esc_html__('No archive items found in trash', 'Axxela' )
+        'name'                => _x( 'Archive', 'Post Type General Name', 'Axxela' ),
+        'singular_name'       => _x( 'Archive', 'Post Type Singular Name', 'Axxela' ),
+        'menu_name'           => __( 'Archives', 'Axxela' ),
+        'parent_item_colon'   => __( 'Parent Archive', 'Axxela' ),
+        'all_items'           => __( 'All Archives', 'Axxela' ),
+        'view_item'           => __( 'View Archive', 'Axxela' ),
+        'add_new_item'        => __( 'Add New Archive', 'Axxela' ),
+        'add_new'             => __( 'Add Archive', 'Axxela' ),
+        'edit_item'           => __( 'Edit Archive', 'Axxela' ),
+        'update_item'         => __( 'Update Archive', 'Axxela' ),
+        'search_items'        => __( 'Search Archive', 'Axxela' ),
+        'not_found'           => __( 'Not Found', 'Axxela' ),
+        'not_found_in_trash'  => __( 'Not found in Trash', 'Axxela' ),
     );
+     
+    // Customize option for Custom Post Type  
     $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'show_ui' => true,
-        'menu_icon' => 'dashicons-paperclip',
-        'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'author', 'custom-fields', 'revisions' ),
-        'capability_type' => 'post',
-        'hierarchical' => false,
-        'rewrite' => array( 'slug' => sanitize_title( 'archive' ), 'with_front' => false ),
-        'menu_position' => 5,
-        'has_archive' => true
+        'label'               => __( 'archive', 'Axxela' ),
+        'description'         => __( 'archive for blog post', 'Axxela' ),
+        'labels'              => $labels,
+        // Custom Post Type supports features in the Post Editor
+        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+        // You can associate this Custom Post Type with a taxonomy or custom taxonomy. 
+        'taxonomies'          => array( '' ),
+        'hierarchical'        => false,
+        'public'              => true,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_nav_menus'   => true,
+        'show_in_admin_bar'   => true,
+        'menu_position'       => 5,
+        'can_export'          => true,
+        'has_archive'         => true,
+        'exclude_from_search' => false,
+        'publicly_queryable'  => true,
+        'menu_icon'           => 'dashicons-paperclip',
+        'capability_type'     => 'page',
     );
+    // Registering your Custom Post Type
     register_post_type( 'archive', $args );
 }
-add_action( 'init', 'archive_init' );
+ 
+add_action( 'init', 'custom_archive_type', 0 );
