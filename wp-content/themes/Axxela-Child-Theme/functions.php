@@ -28,6 +28,7 @@ register_sidebar( array(
 ) );
 
 add_action( 'widgets_init', 'my_contact_info_widget_init' );
+
  
 function my_contact_info_widget_init() {
     register_widget( 'my_contact_info_widget' );
@@ -154,3 +155,32 @@ function add_upload_mimes($mimes) {
     return $mimes;
 }
 add_filter('upload_mimes', 'add_upload_mimes');
+
+function archive_init() {
+    $labels = array(
+        'name' => esc_html__('Archives', 'Axxela' ),
+        'singular_name' => esc_html__('Archive Item', 'Axxela' ),
+        'add_new' => esc_html__('Add New Item', 'Axxela' ),
+        'add_new_item' => esc_html__('Add New Archive Item', 'Axxela' ),
+        'edit_item' => esc_html__('Edit Archive Item', 'Axxela' ),
+        'new_item' => esc_html__('Add New Archive Item', 'Axxela' ),
+        'view_item' => esc_html__('View Item', 'Axxela' ),
+        'search_items' => esc_html__('Search Archive', 'Axxela' ),
+        'not_found' => esc_html__('No archive items found', 'Axxela' ),
+        'not_found_in_trash' => esc_html__('No archive items found in trash', 'Axxela' )
+    );
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'show_ui' => true,
+        'menu_icon' => 'dashicons-paperclip',
+        'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'author', 'custom-fields', 'revisions' ),
+        'capability_type' => 'post',
+        'hierarchical' => false,
+        'rewrite' => array( 'slug' => sanitize_title( 'archive' ), 'with_front' => false ),
+        'menu_position' => 5,
+        'has_archive' => true
+    );
+    register_post_type( 'archive', $args );
+}
+add_action( 'init', 'archive_init' );
