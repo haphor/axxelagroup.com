@@ -158,7 +158,7 @@ add_filter('upload_mimes', 'add_upload_mimes');
 
 function archive_init() {
     $labels = array(
-        'name' => esc_html__('Archives', 'Axxela' ),
+        'name' => esc_html__('Archive', 'Axxela' ),
         'singular_name' => esc_html__('Archive Item', 'Axxela' ),
         'add_new' => esc_html__('Add New Item', 'Axxela' ),
         'add_new_item' => esc_html__('Add New Archive Item', 'Axxela' ),
