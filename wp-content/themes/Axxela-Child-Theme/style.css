@@ -147,6 +147,16 @@ Text Domain:  Axxela
 }
 
 
+.single-archive main,
+.single-article main {
+    max-width: 1170px;
+    margin: 0px auto;
+}
+.single-archive main .fusion-page-title-row,
+.single-article main .fusion-page-title-row {
+    max-width: 1170px !important;
+}
+
 /* Slider */
 
 .tp-caption {
