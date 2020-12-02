@@ -1,6 +1,7 @@
 <?php
 /**
  * Class: WPGMP_Model_Drawing
+ *
  * @author Flipper Code <hello@flippercode.com>
  * @version 3.0.0
  * @package Maps
@@ -10,6 +11,7 @@ if ( ! class_exists( 'WPGMP_Model_Drawing' ) ) {
 
 	/**
 	 * Drawing model for Shapes operation.
+	 *
 	 * @package Maps
 	 * @author Flipper Code <hello@flippercode.com>
 	 */
@@ -21,26 +23,31 @@ if ( ! class_exists( 'WPGMP_Model_Drawing' ) ) {
 		}
 		/**
 		 * Admin menu for Drawing Operation
+		 *
 		 * @return array Admin meny navigation(s).
 		 */
 		function navigation() {
 			return array(
-			'wpgmp_manage_drawing' => __( 'Drawing', WPGMP_TEXT_DOMAIN ),
+				'wpgmp_manage_drawing' => esc_html__( 'Drawing', 'wpgmp-google-map' ),
 			);
 		}
 
 		function save() {
 			global  $_POST;
-			$map_id = $_POST['map_id'];
-			$data['polylines'][0] = $_POST['shapes_values'];
-			$infowindow['map_polyline_setting']['shapes'] = serialize($data);
-			$in_loc_data = array(
-				'map_polyline_setting' => $infowindow['map_polyline_setting']['shapes']
-			);
-			$where['map_id']=$map_id;
-			
-			FlipperCode_Database::insert_or_update(TBL_MAP,$in_loc_data,$where);
-			unset($_POST['operation']);
+
+			if ( isset( $_POST['map_id'] ) ) {
+				$map_id                                       = intval( wp_unslash( $_POST['map_id'] ) );
+				$data['polylines'][0]                         = $_POST['shapes_values'];
+				$infowindow['map_polyline_setting']['shapes'] = serialize( $data );
+				$in_loc_data                                  = array(
+					'map_polyline_setting' => $infowindow['map_polyline_setting']['shapes'],
+				);
+				$where['map_id']                              = $map_id;
+
+				FlipperCode_Database::insert_or_update( TBL_MAP, $in_loc_data, $where );
+			}
+
+			unset( $_POST['operation'] );
 		}
 	}
 }

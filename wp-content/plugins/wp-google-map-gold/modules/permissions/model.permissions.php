@@ -1,6 +1,7 @@
 <?php
 /**
  * Class: WPGMP_Model_Permissions
+ *
  * @author Flipper Code <hello@flippercode.com>
  * @version 3.0.0
  * @package Maps
@@ -10,6 +11,7 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 
 	/**
 	 * Permission model for Plugin Access Permission.
+	 *
 	 * @package Maps
 	 * @author Flipper Code <hello@flippercode.com>
 	 */
@@ -21,11 +23,12 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 		}
 		/**
 		 * Admin menu for Permission Operation
+		 *
 		 * @return array Admin menu navigation(s).
 		 */
 		function navigation() {
 			return array(
-			'wpgmp_manage_permissions' => __( 'Manage Permissions', WPGMP_TEXT_DOMAIN ),
+				'wpgmp_manage_permissions' => esc_html__( 'Manage Permissions', 'wpgmp-google-map' ),
 			);
 		}
 		/**
@@ -43,20 +46,20 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 			}
 			global $wp_roles;
 			$wpgmp_roles = $wp_roles->get_names();
-			unset($wpgmp_roles['administrator']);
+			unset( $wpgmp_roles['administrator'] );
 			$wpgmp_permissions = array(
-			'wpgmp_admin_overview'          => 'Map Overview',
-			'wpgmp_form_location'            => 'Add Locations',
-			'wpgmp_manage_location'         => 'Manage Locations',
-			'wpgmp_import_location'         => 'Import Locations',
-			'wpgmp_form_map'              => 'Create Map',
-			'wpgmp_manage_map'              => 'Manage Map',
-			'wpgmp_manage_drawing'          => 'Drawing',
-			'wpgmp_form_group_map'     => 'Add Marker Category',
-			'wpgmp_manage_group_map'  => 'Manage Marker Category',
-			'wpgmp_form_route'              => 'Add Routes',
-			'wpgmp_manage_route'           => 'Manage Routes',
-			'wpgmp_settings'         		=> 'Settings',
+				'wpgmp_admin_overview'   => esc_html__('Map Overview','wpgmp-google-map'),
+				'wpgmp_form_location'    => esc_html__('Add Locations','wpgmp-google-map'),
+				'wpgmp_manage_location'  => esc_html__('Manage Locations','wpgmp-google-map'),
+				'wpgmp_import_location'  => esc_html__('Import Locations','wpgmp-google-map'),
+				'wpgmp_form_map'         => esc_html__('Create Map','wpgmp-google-map'),
+				'wpgmp_manage_map'       => esc_html__('Manage Map','wpgmp-google-map'),
+				'wpgmp_manage_drawing'   => esc_html__('Drawing','wpgmp-google-map'),
+				'wpgmp_form_group_map'   => esc_html__('Add Marker Category','wpgmp-google-map'),
+				'wpgmp_manage_group_map' => esc_html__('Manage Marker Category','wpgmp-google-map'),
+				'wpgmp_form_route'       => esc_html__('Add Routes','wpgmp-google-map'),
+				'wpgmp_manage_route'     => esc_html__('Manage Routes','wpgmp-google-map'),
+				'wpgmp_settings'         => esc_html__('Settings','wpgmp-google-map'),
 			);
 			$this->verify( $_POST );
 
@@ -64,7 +67,13 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 				$this->throw_errors();
 			}
 			if ( isset( $_POST['wpgmp_save_permission'] ) ) {
-				$wpgmp_map_permissions = wp_unslash( $_POST['wpgmp_map_permissions'] );
+
+				if ( isset( $_POST['wpgmp_map_permissions'] ) ) {
+					$wpgmp_map_permissions = wp_unslash( $_POST['wpgmp_map_permissions'] );
+				} else {
+					$wpgmp_map_permissions = array();
+				}
+
 				if ( ! empty( $wpgmp_roles ) ) {
 					foreach ( $wpgmp_roles as $wpgmp_role_key => $wpgmp_role_value ) {
 						if ( $wpgmp_role_key == 'administrator' && is_admin() && current_user_can( 'manage_options' ) ) {
@@ -74,7 +83,7 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 
 						if ( ! empty( $wpgmp_permissions ) ) {
 							foreach ( $wpgmp_permissions as $wpgmp_mkey => $wpgmp_mvalue ) {
-								if ( isset( $wpgmp_map_permissions[$wpgmp_role_key][$wpgmp_mkey] ) ) {
+								if ( isset( $wpgmp_map_permissions[ $wpgmp_role_key ][ $wpgmp_mkey ] ) ) {
 									$role->add_cap( $wpgmp_mkey );
 								} else {
 									$role->remove_cap( $wpgmp_mkey );
@@ -84,9 +93,9 @@ if ( ! class_exists( 'WPGMP_Model_Permissions' ) ) {
 					}
 				}
 			}
-			$response['success'] = __( 'Permissions saved successfully.', WPGMP_TEXT_DOMAIN );
+			$response['success'] = esc_html__( 'Permissions saved successfully.', 'wpgmp-google-map' );
 			return $response;
 		}
-		
+
 	}
 }

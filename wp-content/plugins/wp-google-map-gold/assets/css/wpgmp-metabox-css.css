@@ -1,13 +1,14 @@
 #wpgmp_google_map_metabox input[type="text"] {
-	height: 30px;
+    height: 30px;
 }
+
 #wpgmp_google_map_metabox .wpgmp_meta_map {
-	width: 100%;
-	height: 200px;
+    width: 100%;
+    height: 200px;
 }
 
 #wpgmp_google_map_metabox .wpgmp_metabox_location {
-	width: 100%;
+    width: 100%;
 }
 
 #wpgmp_google_map_metabox .row_metabox {
@@ -29,7 +30,7 @@
     background: url(../images/nav.png) no-repeat;
     display: inline-block;
     height: 25px;
-    cursor: pointer!important;
+    cursor: pointer !important;
     vertical-align: middle;
     width: 25px;
     float: right;
